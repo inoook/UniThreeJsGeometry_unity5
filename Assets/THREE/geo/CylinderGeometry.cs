@@ -52,13 +52,13 @@ namespace THREE
 			
 				if (radiusTop != 0) {
 				
-					na = clone (this.vertices [vertices [0] [x]]);
-					nb = clone (this.vertices [vertices [0] [x + 1]]);
+					na =  (this.vertices [vertices [0] [x]]);
+					nb =  (this.vertices [vertices [0] [x + 1]]);
 				
 				} else {
 				
-					na = clone (this.vertices [vertices [1] [x]]);
-					nb = clone (this.vertices [vertices [1] [x + 1]]);
+					na =  (this.vertices [vertices [1] [x]]);
+					nb =  (this.vertices [vertices [1] [x + 1]]);
 				
 				}
 			
@@ -74,25 +74,27 @@ namespace THREE
 					int v3 = vertices [y + 1] [x + 1];
 					int v4 = vertices [y] [x + 1];
 				
-					Vector3 n1 = clone (na);
-					Vector3 n2 = clone (na);
-					Vector3 n3 = clone (nb);
-					Vector3 n4 = clone (nb);
+					Vector3 n1 =  (na);
+					Vector3 n2 =  (na);
+					Vector3 n3 =  (nb);
+					Vector3 n4 =  (nb);
 				
-					Vector2 uv1 = clone (uvs [y] [x]);
-					Vector2 uv2 = clone (uvs [y + 1] [x]);
-					Vector2 uv3 = clone (uvs [y + 1] [x + 1]);
-					Vector2 uv4 = clone (uvs [y] [x + 1]);
-					
-					this.faces.Add (new Face3 (v1, v2, v4, new Vector3[]{ n1, n2, n4 } ));
-					this.faceVertexUvs.Add (new List<Vector2> (new Vector2[]{ uv1, uv2, uv4 }));
+					Vector2 uv1 =  (uvs [y] [x]);
+					Vector2 uv2 =  (uvs [y + 1] [x]);
+					Vector2 uv3 =  (uvs [y + 1] [x + 1]);
+					Vector2 uv4 =  (uvs [y] [x + 1]);
+
+					Face3 face0 = new Face3 (v1, v2, v4, new Vector3[]{ n1, n2, n4 });
+					face0.uvs = new Vector2[]{ uv1, uv2, uv4 };
+					this.faces.Add (face0);
 				
-					this.faces.Add (new Face3 (v2, v3, v4, new Vector3[]{ clone(n2), n3, clone(n4) } ));
-					this.faceVertexUvs.Add (new List<Vector2> (new Vector2[] {
-						clone (uv2),
+					Face3 face1 = new Face3 (v2, v3, v4, new Vector3[]{ (n2), n3, (n4) } );
+					face1.uvs = new Vector2[] {
+						 (uv2),
 						uv3,
-						clone (uv4)
-					}));
+						 (uv4)
+					};
+					this.faces.Add (face1);
 				}
 			
 			}
@@ -113,13 +115,13 @@ namespace THREE
 					Vector3 n2 = new Vector3( 0, 1, 0 );
 					Vector3 n3 = new Vector3( 0, 1, 0 );
 				
-					Vector2 uv1 = clone (uvs [0] [x]);
-					Vector2 uv2 = clone (uvs [0] [x + 1]);
+					Vector2 uv1 =  (uvs [0] [x]);
+					Vector2 uv2 =  (uvs [0] [x + 1]);
 					Vector2 uv3 = new Vector2 (uv2.x, 0);
 				
-					this.faces.Add (new Face3 (v1, v2, v3, new Vector3[]{ n1, n2, n3 } ));
-					this.faceVertexUvs.Add (new List<Vector2> (new Vector2[]{ uv1, uv2, uv3 }));
-				
+					Face3 face = new Face3 (v1, v2, v3, new Vector3[]{ n1, n2, n3 });
+					face.uvs = new Vector2[]{ uv1, uv2, uv3 };
+					this.faces.Add (face);
 				}
 			
 			}
@@ -140,14 +142,14 @@ namespace THREE
 					Vector3 n2 = new Vector3( 0, - 1, 0 );
 					Vector3 n3 = new Vector3( 0, - 1, 0 );
 
-					Vector2 uv1 = clone (uvs [y] [x + 1]);
-					Vector2 uv2 = clone (uvs [y] [x]);
+					Vector2 uv1 =  (uvs [y] [x + 1]);
+					Vector2 uv2 =  (uvs [y] [x]);
 					//Vector2 uv3 = new Vector2( uv2.u, 1 );
 					Vector2 uv3 = new Vector2 (uv2.x, 1);
 				
-					this.faces.Add (new Face3 (v1, v2, v3, new Vector3[]{ n1, n2, n3 } ));
-					this.faceVertexUvs.Add (new List<Vector2> (new Vector2[]{ uv1, uv2, uv3 }));
-				
+					Face3 face = new Face3 (v1, v2, v3, new Vector3[]{ n1, n2, n3 });
+					face.uvs = new Vector2[]{ uv1, uv2, uv3 };
+					this.faces.Add (face);
 				}
 			
 			}

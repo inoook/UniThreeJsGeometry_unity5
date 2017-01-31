@@ -10,7 +10,7 @@ namespace THREE
 		public List<Face3> faces;
 		public List<Vector3> vertices;
 		public List<Vector3> normals;
-		public List<List<Vector2>> faceVertexUvs;
+//		public List<List<Vector2>> faceVertexUvs;
 		public List<Color> verticexColors;
 
 		private UnityEngine.Mesh mesh;
@@ -21,7 +21,6 @@ namespace THREE
 			vertices = new List<Vector3> ();
 			normals = new List<Vector3> ();
 
-			faceVertexUvs = new List<List<Vector2>> ();
 			verticexColors = new List<Color>();
 		}
 
@@ -36,10 +35,6 @@ namespace THREE
 			
 			bool isUvsActive = true;
 			
-			if(faceVertexUvs == null){
-				isUvsActive = false;
-			}
-
 			// pre compute normals
 			List<List<Vector3>> sameIdNormalDic = new List<List<Vector3>>();
 			if(smoothAngle > 0){
@@ -47,8 +42,8 @@ namespace THREE
 					sameIdNormalDic.Add(new List<Vector3>());
 				}
 				for (int i = 0; i < faces.Count; i++) {
-					List<int> indexes = faces [i].GetVertexIndexList ();
-					for (int n = 0; n < indexes.Count; n++) {
+					int[] indexes = faces [i].GetVertexIndexList ();
+					for (int n = 0; n < indexes.Length; n++) {
 						int v_id = indexes [n]; // v_id: 頂点のid
 						sameIdNormalDic[v_id] = GetSameIdNormalsById(v_id, smoothAngle);
 					}
@@ -57,15 +52,18 @@ namespace THREE
 
 			int index = 0;
 			for (int i = 0; i < faces.Count; i++) {
-				List<int> indexes = faces [i].GetVertexIndexList ();
-				
-				for (int n = 0; n < indexes.Count; n++) {
+				int[] indexes = faces [i].GetVertexIndexList ();
+				Vector2[] uvs = faces [i].GetUvs();
+				Vector3[] normals = faces [i].GetVertexNormals();
+				isUvsActive = (uvs != null);
+
+				for (int n = 0; n < indexes.Length; n++) {
 					int v_id = indexes [n]; // v_id: 頂点のid
 					
 					// uvs
 					Vector2 uv;
 					if(isUvsActive){
-						uv = faceVertexUvs [i] [n];//  i 番目のfaceのn番目のuv
+						uv = uvs [n];
 						uv.x = 1.0f - uv.x; // flip x
 					}else{
 						uv = new Vector2();
@@ -77,20 +75,9 @@ namespace THREE
 					newVertices.Add(vec);
 					
 					// normal
-					Vector3 norm = faces[i].vertexNormals[n];
+					Vector3 norm = normals[n];
 					Vector3 newNorm = norm;
 					if(smoothAngle > 0){
-
-//						List<Vector3> sameIndexsNormals = GetSameIdNormals(i, n, v_id );
-//
-//						for(int ii = 0; ii < sameIndexsNormals.Count; ii++){
-//							Vector3 sameIndexNormal = sameIndexsNormals[ii];
-//							float angle = Vector3.Angle(norm, sameIndexNormal);
-//							if(angle < smoothAngle){
-//								newNorm += sameIndexNormal;
-//							}
-//						}
-//						newNorm.Normalize();
 
 						newNorm = Vector3.zero;
 						List<Vector3> sameIndexsNormals = sameIdNormalDic[v_id];
@@ -105,6 +92,7 @@ namespace THREE
 					}
 					
 					newNormals.Add(newNorm);
+
 					
 					// triangle
 					newTriangle.Add(index);
@@ -124,8 +112,8 @@ namespace THREE
 		{
 			List<Vector3> sameIdNormals = new List<Vector3>();
 			for (int i = 0; i < faces.Count; i++) {
-				List<int> indexes = faces [i].GetVertexIndexList ();
-				for (int n = 0; n < indexes.Count; n++) {
+				int[] indexes = faces [i].GetVertexIndexList ();
+				for (int n = 0; n < indexes.Length; n++) {
 					int check_id = indexes [n]; // v_id: 頂点のid
 					
 					if( !(i == org_i && n == org_n) ){
@@ -143,12 +131,15 @@ namespace THREE
 		{
 			List<Vector3> sameIdNormals = new List<Vector3>();
 			for (int i = 0; i < faces.Count; i++) {
-				List<int> indexes = faces [i].GetVertexIndexList ();
-				for (int n = 0; n < indexes.Count; n++) {
+				Face3 face = faces [i];
+				int[] indexes = face.GetVertexIndexList ();
+				Vector3[] normals = face.GetVertexNormals ();
+				for (int n = 0; n < indexes.Length; n++) {
 					int check_id = indexes [n]; // v_id: 頂点のid
 					
 					if(check_id == v_id){
-						Vector3 sameNormal = faces[i].vertexNormals[n];
+//						Vector3 sameNormal = faces[i].vertexNormals[n];
+						Vector3 sameNormal = normals[n];
 						sameIdNormals.Add(sameNormal);
 					}
 				}
@@ -184,21 +175,21 @@ namespace THREE
 			
 			bool isUvsActive = true;
 			
-			if(faceVertexUvs == null){
-				isUvsActive = false;
-			}
+//			if(faceVertexUvs == null){
+//				isUvsActive = false;
+//			}
 			
 			int index = 0;
 			for (int i = 0; i < faces.Count; i++) {
-				List<int> indexes = faces [i].GetVertexIndexList ();
+				int[] indexes = faces [i].GetVertexIndexList ();
 				
-				for (int n = 0; n < indexes.Count; n++) {
+				for (int n = 0; n < indexes.Length; n++) {
 					int v_id = indexes [n]; // v_id: 頂点のid
 					
 					// uvs
 					Vector2 uv;
 					if(isUvsActive){
-						uv = faceVertexUvs [i] [n];//  i 番目のfaceのn番目のuv
+						uv = faces [i].uvs [n];//  i 番目のfaceのn番目のuv
 						uv.x = 1.0f - uv.x; // flip x
 					}else{
 						uv = new Vector2();
@@ -243,10 +234,10 @@ namespace THREE
 			// uv
 			List<Vector2> t_uv = new List<Vector2> (new Vector2[vertices.Count]);
 			for (int i = 0; i < faces.Count; i++) {
-				List<int> indexes = faces [i].GetVertexIndexList ();
-				for (int n = 0; n < indexes.Count; n++) {
+				int[] indexes = faces [i].GetVertexIndexList ();
+				for (int n = 0; n < indexes.Length; n++) {
 					int v_id = indexes [n]; // v_id: 頂点のid
-					Vector2 uv = faceVertexUvs [i] [n];//  i 番目のfaceのn番目のuv
+					Vector2 uv = faces [i].uvs [n];//  i 番目のfaceのn番目のuv
 					uv.x = 1.0f - uv.x; // flip x
 					t_uv [v_id] = uv;
 				}
@@ -385,10 +376,6 @@ namespace THREE
 			for (int i = faceIndicesToRemove.Count - 1; i >= 0; i --) {
 				int idx = faceIndicesToRemove [i];
 				this.faces.RemoveAt (idx);
-
-				for (int j = this.faceVertexUvs.Count -1; j >= 0; j--) {
-					this.faceVertexUvs [j].RemoveAt(idx);
-				}
 			}
 		
 			// Use unique set of vertices
@@ -493,13 +480,26 @@ namespace THREE
 			}
 		}
 
-		public Vector2 clone(Vector2 vec)
+//		public Vector2 clone(Vector2 vec)
+//		{
+//			return Utils.clone(vec);
+//		}
+//		public Vector3 clone(Vector3 vec)
+//		{
+//			return Utils.clone(vec);
+//		}
+
+		public void SetFlipFace(bool enable)
 		{
-			return Utils.clone(vec);
+			foreach(Face3 f in faces){
+				f.flip = enable;
+			}
 		}
-		public Vector3 clone(Vector3 vec)
+		public void SetDoubleSided(bool enable)
 		{
-			return Utils.clone(vec);
+			foreach(Face3 f in faces){
+				f.doubleSided = enable;
+			}
 		}
 	}
 }

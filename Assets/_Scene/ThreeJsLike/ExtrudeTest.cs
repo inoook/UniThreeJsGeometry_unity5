@@ -40,6 +40,7 @@ public class ExtrudeTest : ThreeBehaviour {
 		
 		THREE.Shape shape = new THREE.Shape( pts );
 
+
 		THREE.MeshThreeJs threeMesh;
 
 		testGeometry = new THREE.ExtrudeGeometry(new List<THREE.Shape>(new THREE.Shape[]{ shape }), extrudeSettings );
@@ -63,16 +64,36 @@ public class ExtrudeTest : ThreeBehaviour {
 		extrude0Settings.extrudePath = randomSpline;
 
 
+//		List<Vector2> pts0 = new List<Vector2>();
+//		int numPts = 5;
+//		
+//		for ( int i = 0; i < numPts * 2; i ++ ) {
+//			int l = i % 2 == 1 ? 10 : 20;
+//			float a = (float)i / numPts * Mathf.PI;
+//			pts0.Add( new Vector2 ( Mathf.Cos( a ) * l, Mathf.Sin( a ) * l ) );
+//		}
+//		
+//		Shape shape0 = new Shape( pts0 );
+
+
+		// star path
 		List<Vector2> pts0 = new List<Vector2>();
+		List<Vector2> normals0 = new List<Vector2>();
 		int numPts = 5;
-		
 		for ( int i = 0; i < numPts * 2; i ++ ) {
 			int l = i % 2 == 1 ? 10 : 20;
 			float a = (float)i / numPts * Mathf.PI;
 			pts0.Add( new Vector2 ( Mathf.Cos( a ) * l, Mathf.Sin( a ) * l ) );
 		}
-		
-		Shape shape0 = new Shape( pts0 );
+		for ( int i = 0; i < pts0.Count; i ++ ) {
+			int endI = (i == pts0.Count-1) ? 0 : i+1;
+			Vector2 vec = pts0[endI] - pts0[i];
+			vec.Normalize();
+			normals0.Add( new Vector2 ( vec.y, -vec.x ) );
+		}
+
+		THREE.Shape shape0 = new Shape( pts0, normals0 );
+
 		testGeometry = new THREE.ExtrudeGeometry( new List<Shape>(new Shape[]{ shape0 }), extrude0Settings );
 		threeMesh = new THREE.MeshThreeJs( testGeometry, material);
 		scene.Add( threeMesh );

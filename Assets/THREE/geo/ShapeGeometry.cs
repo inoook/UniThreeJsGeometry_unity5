@@ -144,9 +144,10 @@ namespace THREE
 				int b = face[1] + shapesOffset;
 				int c = face[2] + shapesOffset;
 
-				this.faces.Add( new Face3( a, b, c ) );
+				Face3 f = new Face3( a, b, c );
+				f.uvs = uvgen.generateBottomUV( this, shape, a, b, c ).ToArray();
+				this.faces.Add(f);
 
-				this.faceVertexUvs.Add( uvgen.generateBottomUV( this, shape, a, b, c ) );
 				//this.faceVertexUvs.Add( new List<Vector2>( new Vector2[]{ new Vector2(0.0f, 0.0f), new Vector2(0.0f, 0.0f), new Vector2(0.0f, 0.0f) })); // debug
 			}
 		}

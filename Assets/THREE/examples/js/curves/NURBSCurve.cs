@@ -16,8 +16,8 @@ namespace THREE {
 
 	public class NURBSCurve : Curve {
 
-		int degree = degree;
-		float[] knots = knots;
+		int degree;
+		float[] knots;
 		Vector4[] controlPoints;
 
 		public NURBSCurve(int degree, float[] knots /* array of reals */, Vector4[] controlPoints /* array of Vector(2|3|4) */ ){

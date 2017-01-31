@@ -67,23 +67,21 @@ namespace THREE
 					Vector2 uvc = new Vector2( (float)( ix + 1 ) / gridX, 1 - (float)( iz + 1 ) / gridZ );
 					Vector2 uvd = new Vector2( (float)( ix + 1 ) / gridX, 1 - (float)iz / gridZ );
 					
-					Face3 face = new Face3( a, b, d, new Vector3[]{normal, normal, normal} );
+					Face3 face0 = new Face3( a, b, d, new Vector3[]{normal, normal, normal} );
 					//face.normal.copy( normal );
 					//face.vertexNormals.push( normal.clone(), normal.clone(), normal.clone() );
 					//face.materialIndex = materialIndex;
+
+					face0.uvs = new Vector2[]{ uva, uvb, uvd };
+					this.faces.Add( face0 );
 					
-					this.faces.Add( face );
-					this.faceVertexUvs.Add( new List<Vector2>( new Vector2[]{ uva, uvb, uvd } ) );
-					
-					face = new Face3( b, c, d, new Vector3[]{normal, normal, normal} );
+					Face3 face1 = new Face3( b, c, d, new Vector3[]{normal, normal, normal} );
 					//face.normal.copy( normal );
 					//face.vertexNormals.push( normal.clone(), normal.clone(), normal.clone() );
 					//face.materialIndex = materialIndex;
-					
-					this.faces.Add( face );
-					this.faceVertexUvs.Add( new List<Vector2>( new Vector2[]{ uvb, uvc, uvd } ) );
 
-
+					face1.uvs = new Vector2[]{ uvb, uvc, uvd };
+					this.faces.Add( face1 );
 				}
 			}
 		

@@ -58,7 +58,7 @@ namespace THREE
 				this.smooth( geometry );
 			}
 
-			geometry.faceVertexUvs = null;
+//			geometry.faceVertexUvs = null;
 			Debug.Log("TODO: UVS");
 			
 			geometry.computeFaceNormals();

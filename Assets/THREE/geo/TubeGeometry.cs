@@ -122,12 +122,14 @@ namespace THREE
 					uvb = new Vector2( (float)( i + 1 ) / segments, (float)j / radialSegments );
 					uvc = new Vector2( (float)( i + 1 ) / segments, (float)( j + 1 ) / radialSegments );
 					uvd = new Vector2( (float)i / segments, (float)( j + 1 ) / radialSegments );
+
+					Face3 face0 = new Face3 (a, b, d);
+					face0.uvs = new Vector2[]{ uva, uvb, uvd };
+					this.faces.Add( face0 );
 					
-					this.faces.Add( new Face3( a, b, d ) );
-					this.faceVertexUvs.Add( new List<Vector2>( new Vector2[]{ uva, uvb, uvd }) );
-					
-					this.faces.Add( new Face3( b, c, d ) );
-					this.faceVertexUvs.Add( new List<Vector2>( new Vector2[]{ uvb, uvc, uvd }));
+					Face3 face1 = new Face3 (b, c, d);
+					face1.uvs = new Vector2[]{ uvb, uvc, uvd };
+					this.faces.Add( face1 );
 					
 				}
 			}

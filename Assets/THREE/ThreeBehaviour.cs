@@ -76,7 +76,6 @@ namespace THREE
 			this.geo = geo;
 			this.mat = mat;
 			//this.rotation = Quaternion.identity;
-
 			this.geo.CreateAndGetMesh ();
 		}
 

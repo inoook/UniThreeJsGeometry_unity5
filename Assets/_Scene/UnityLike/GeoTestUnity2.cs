@@ -39,7 +39,7 @@ public class GeoTestUnity2 : MonoBehaviour {
 		}
 		AddRenderObject( new THREE.LatheGeometry( points, 20 ), material, new Vector3( -400, 0, -200 ) );
 
-		AddRenderObject( new THREE.TorusGeometry( 50, 20, 20, 20 ), material, new Vector3( -200, 0, -200 ) );
+		AddRenderObject( new THREE.TorusGeometry( 50, 20, 20, 20 ), material, new Vector3( -200, 200, -200 ) );
 
 		AddRenderObject( new THREE.TorusKnotGeometry( 50, 10, 50, 20 ), material, new Vector3( 0, 0, -200 ) );
 		
@@ -48,9 +48,9 @@ public class GeoTestUnity2 : MonoBehaviour {
 		THREE.Geometry geo = geometry;
 		for(int i = 0; i < geo.faces.Count; i++){
 			THREE.Face3 _face = geo.faces[i];
-			List<int> tri = _face.GetTriangles();
+			int[] tri = _face.GetTriangles();
 
-			for(int n = 0; n < tri.Count; n++){
+			for(int n = 0; n < tri.Length; n++){
 				Vector3 normal = _face.vertexNormals[n];
 				THREE.ArrowHelper arrow = new THREE.ArrowHelper(normal, geo.vertices[tri[n]] , 10, Color.green);
 				lineMesh.Add( arrow );

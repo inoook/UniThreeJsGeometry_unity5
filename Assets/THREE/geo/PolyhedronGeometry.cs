@@ -52,9 +52,9 @@ namespace THREE
 			}
 		
 			// Handle case when face straddles the seam
-			for (int i = 0, l = this.faceVertexUvs.Count; i < l; i ++) {
+			for (int i = 0, l = this.faces.Count; i < l; i ++) {
 			
-				List<Vector2> uvs = this.faceVertexUvs [i];
+				Vector2[] uvs = this.faces [i].uvs;
 			
 				float x0 = uvs [0].x;
 				float x1 = uvs [1].x;
@@ -133,21 +133,19 @@ namespace THREE
 		{
 		
 			Face3 face = new Face3 (v1.index, v2.index, v3.index, new Vector3[]{ v1.vec, v2.vec, v3.vec } );
-			this.faces.Add (face);
 
 			// centroid.copy( v1 ).add( v2 ).add( v3 ).divideScalar( 3 );
 			//THREEVector3 centroid = new THREEVector3();
 			//centroid.vec = Vector3.zero;
 			centroid.vec = (v1.vec + v2.vec + v3.vec) / 3.0f;
-
 			float azi = azimuth (centroid);
-		
-			this.faceVertexUvs.Add (new List<Vector2> (new Vector2[]{
-		                               correctUV (v1.uv, v1, azi),
-		                               correctUV (v2.uv, v2, azi),
-		                               correctUV (v3.uv, v3, azi)
-		}));
-		
+
+			face.uvs = new Vector2[] {
+				correctUV (v1.uv, v1, azi),
+				correctUV (v2.uv, v2, azi),
+				correctUV (v3.uv, v3, azi)
+			};
+			this.faces.Add (face);
 		}
 	
 	

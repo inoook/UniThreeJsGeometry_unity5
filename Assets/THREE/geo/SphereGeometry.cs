@@ -88,22 +88,23 @@ namespace THREE
 
 					if (Mathf.Abs (this.vertices [v1].y) == this.radius) {
 					
-						this.faces.Add (new Face3 (v1, v3, v4, new Vector3[]{ n1, n3, n4} ));
-						this.faceVertexUvs.Add (new List<Vector2> (new Vector2[]{ uv1, uv3, uv4 }));
+						Face3 face = new Face3 (v1, v3, v4, new Vector3[]{ n1, n3, n4 });
+						face.uvs = new Vector2[]{ uv1, uv3, uv4 };
+						this.faces.Add (face);
 					
 					} else if (Mathf.Abs (this.vertices [v3].y) == this.radius) {
-					
-						this.faces.Add (new Face3 (v1, v2, v3, new Vector3[]{ n1, n2, n3} ));
-						//this.faceVertexUvs[ 0 ].push( [ uv1, uv2, uv3 ] );
-						this.faceVertexUvs.Add (new List<Vector2> (new Vector2[]{ uv1, uv2, uv3 }));
+						Face3 face = new Face3 (v1, v2, v3, new Vector3[]{ n1, n2, n3 });
+						face.uvs = new Vector2[]{ uv1, uv2, uv3 };
+						this.faces.Add (face);
 					
 					} else {
-						this.faces.Add( new Face3( v1, v2, v4, new Vector3[]{ n1, n2, n4} ));
-						this.faceVertexUvs.Add (new List<Vector2> (new Vector2[]{uv1, uv2, uv4 }) );
-						
-						this.faces.Add( new Face3( v2, v3, v4, new Vector3[]{ n2, n3, n4} ));
-						this.faceVertexUvs.Add (new List<Vector2> (new Vector2[]{ uv2, uv3, uv4 }) );
+						Face3 face0 = new Face3 (v1, v2, v4, new Vector3[]{ n1, n2, n4 });
+						face0.uvs = new Vector2[]{ uv1, uv2, uv4 };
+						this.faces.Add(face0 );
 
+						Face3 face1 = new Face3( v2, v3, v4, new Vector3[]{ n2, n3, n4} );
+						face1.uvs = new Vector2[]{ uv2, uv3, uv4 };
+						this.faces.Add(face1 );
 					}
 				}
 			}

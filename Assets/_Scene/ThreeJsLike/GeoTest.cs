@@ -73,16 +73,15 @@ public class GeoTest : ThreeBehaviour {
 		threeMesh = new THREE.MeshThreeJs( new THREE.TorusKnotGeometry( 50, 10, 50, 20 ), material );
 		threeMesh.position = new Vector3( 0, 0, -200 );
 		scene.Add( threeMesh );
-
-
+		
 		/*
 		threeMesh = new THREE.AxisHelper( 50 );
 		threeMesh.position.set( 200, 0, -200 );
-		scene.add( threeMesh );
+		scene.Add( threeMesh );
 		
 		threeMesh = new THREE.ArrowHelper( new THREE.Vector3( 0, 1, 0 ), new THREE.Vector3( 0, 0, 0 ), 50 );
 		threeMesh.position.set( 400, 0, -200 );
-		scene.add( threeMesh );
+		scene.Add( threeMesh );
 		*/
 
 		THREE.Line lineMesh = new THREE.Line( new THREE.Geometry(), wireMaterial);
@@ -91,9 +90,9 @@ public class GeoTest : ThreeBehaviour {
 		THREE.Geometry geo = drawNormalMesh.geo;
 		for(int i = 0; i < geo.faces.Count; i++){
 			THREE.Face3 _face = geo.faces[i];
-			List<int> tri = _face.GetTriangles();
+			int[] tri = _face.GetTriangles();
 
-			for(int n = 0; n < tri.Count; n++){
+			for(int n = 0; n < tri.Length; n++){
 				Vector3 normal = _face.vertexNormals[n];
 				THREE.ArrowHelper arrow = new THREE.ArrowHelper(normal, geo.vertices[tri[n]] , 10, Color.green);
 				lineMesh.Add( arrow );
